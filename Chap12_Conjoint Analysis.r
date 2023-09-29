@@ -329,3 +329,28 @@ brandcount <-as.data.frame(table(purchased))
 brandcount$Freq <- brandcount$Freq/ sum(brandcount$Freq)
 
 ggplot(brandcount, aes(x=purchased,y=Freq)) + geom_bar(stat="identity")
+
+#side----------
+library(tidyverse)
+library(readxl)
+
+icecream <- read_excel("C:/Users/Sungjin Kim/Downloads/icecream.xlsx")
+icecream
+
+icecream <- icecream %>% 
+  pivot_longer(cols = starts_with("Individual"), names_to = "respondent", values_to = "rating") %>% # respondent keeps track of the respondent, rating will store the respondent's ratings, and we want to stack every variable that starts with Individual
+  rename("profile" = "Observations") %>% # rename Observations to profile
+  mutate(profile = factor(profile), respondent = factor(respondent),  # factorize identifiers
+         Flavor = factor(Flavor), Packaging = factor(Packaging), Light = factor(Light), Organic = factor(Organic)) # factorize the ice cream attributes
+
+icecream
+# Wide dataset: one row per unit of observation (here: profile) and a number of columns for the different observations (here: respondents)
+# Long dataset: one row per observation (here: profile x respondent combination)
+
+# Converting from wide to long means that we're stacking a number of columns on top of each other.
+# The pivot_longer function converts datasets from wide to long and takes three arguments:
+# 1. The cols argument: here we tell R which columns we want to stack. The original dataset had 10 rows with 15 columns for 15 individuals. The long dataset will have 150 rows with 150 values for 15 individuals. This means we need to keep track of which individual we're dealing with.
+# 2. The names_to argument: here you define the name of the variable that keeps track of which individual we're dealing with.
+# 3. The values_to argument: here you define the name of the variable that stores the actual values.
+
+icecream
