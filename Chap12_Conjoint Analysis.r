@@ -7,6 +7,7 @@ install.packages("conjoint")
 
 ## Load Packages and Set Seed
 library(conjoint)
+library(tidyverse)
 set.seed(1)
 setwd("G:/My Drive/Teaching/Marketing Analytics/Chapter Examples")
 ## Set up attributes and levels as a list
@@ -31,7 +32,7 @@ write.csv(design, file.choose(new=TRUE), row.names = FALSE) ## Name the file con
 
 ## Read in the survey preference results
 pref <- read_csv("Chapter 12/conjoint_preferences.csv") ## Choose the file named conjoint_preferences.csv
-
+pref
 ## Set up attributes and levels as a vector and Estimate the part-worths for each respondent
 attrib.vector <- data.frame(unlist(attrib.level,use.names=FALSE))
 attrib.vector
@@ -67,9 +68,119 @@ for (i in 1:ncol(pref)){
   part.worths <- rbind(part.worths, temp)
 }
 rownames(part.worths) <- colnames(pref)
+part.worths
 
 ## Export part-worths from analysis
-write.csv(part.worths, file.choose(new=TRUE), row.names = FALSE) ## Name the file conjoint_partworths.csv
+#write.csv(part.worths, file.choose(new=TRUE), row.names = FALSE) ## Name the file conjoint_partworths.csv
+
+part.worths
+tprefm #Matrix of preferences(100 respondents and 13 profiles)
+tprof
+tprefm
+t(pref)
+tlevn
+pref
+design
+
+caPartUtilities(pref,design,attrib.vector) # this is not correct
+caPartUtilities(t(pref),design,attrib.vector) #this is correct. Basically gives the same results to part.worth e.g. CR and Apple for the first person -0.657+0.068
+Conjoint(t(pref),design,attrib.vector)
+
+uslall<-caPartUtilities(tprefm,tprof,tlevn)
+uslall
+#Official Manual------------------------------------
+
+#Function caEncodedDesign encodes full or fractional factorial design. Function converts design of experiment to matrix of profiles.
+library(conjoint)
+#expand.grid: Create a data frame from all combinations of the supplied vectors or factors.
+
+experiment<-expand.grid(
+  price=c("low","medium","high"),
+  variety=c("black","green","red"),
+  kind=c("bags","granulated","leafy"),
+  aroma=c("yes","no"))
+experiment
+
+#Function caFactorialDesign creates full or fractional factorial design. Function can return orthogonal factorial design.
+design=caFactorialDesign(data=experiment,type="orthogonal")
+design
+design=caFactorialDesign(data=experiment,type="fractional", cards = 30)
+design
+print(design)
+code=caEncodedDesign(design)
+print(code)
+print(cor(code))
+
+#Function caImportance calculates importance of all attributes. Function returns vector of percentage attributes' importance and corresponding chart (barplot). The sum of importance should be 100%.
+#y	matrix of preferences
+#x	matrix of profiles
+
+#Example 1
+library(conjoint)
+data(tea)
+tprefm
+tprof
+imp
+dim(tprefm)
+dim(tprof)
+tprof
+imp<-caImportance(tprefm,tprof)
+
+print("Importance summary: ", quote=FALSE)
+print(imp)
+print(paste("Sum: ", sum(imp)), quote=FALSE)
+
+#caLogit: Function caLogit estimates participation (market share) of the simulation profiles
+#Function caLogit estimates participation of simulation profiles using logit model. Function returns vector of percentage participations. The sum of participation should be 100%.
+data(tea)
+tsimp
+simutil<-caLogit(tsimp,tpref,tprof)
+print("Percentage participation of profiles: ", quote=FALSE)
+print(simutil)
+
+#caMaxUtility Function caMaxUtility estimates participation (market share) of simulation profiles
+#Function caMaxUtility estimates participation of simulation profiles using model of maximum utility ("first position"). Function returns vector of percentage participations. The sum of participation should be 100%.
+
+simutil<-caMaxUtility(tsimp,tpref,tprof)
+print("Percentage participation of profiles: ", quote=FALSE)
+print(simutil)
+
+
+#caPartUtilities: Function caPartUtilities calculates matrix of individual utilities
+#Function caPartUtilities calculates matrix of individual utilities for respondents. Function returns matrix of partial utilities (parameters of conjoint model regresion) for all artificial variables including parameters for reference levels for respondents (with intercept on first place).
+uslall<-caPartUtilities(tprefm,tprof,tlevn)
+print(uslall)
+dim(uslall)
+#caSegmentation: Function caSegmentation divides respondents on clusters
+require(fpc)
+data(tea)
+tprefm
+tprof
+segments<-caSegmentation(tprefm,tprof)
+print(segments$seg)
+plotcluster(segments$util,segments$sclu)
+
+#caTotalUtilities: Function caTotalUtilities calculates matrix of theoreticall total utilities
+tprefm
+uslall1<-caTotalUtilities(tprefm,tprof)
+print(uslall1)
+dim(uslall1)
+
+uslall<-caUtilities(tprefm,tprof,tlevn)
+print(uslall)
+
+
+#caUtilities: Function caUtilities calculates utilities of levels of atrtributes
+par(mfrow=c(2,2))
+uslall<-caUtilities(tprefm,tprof,tlevn) 
+
+print(uslall)
+
+#Conjoint: Function Conjoint sums up the main results of conjoint analysis
+#Function Conjoint is a combination of following conjoint pakage's functions: caPartUtilities, caUtilities and caImportance. Therefore it sums up the main results of conjoint analysis. Function Conjoint returns matrix of partial utilities for levels of variables for respondents, vector of utilities for attribute's levels and vector of percentage attributes' importance with corresponding chart (barplot). The sum of importance should be 100
+print("Preferences of all respondents (preferences as rating data):")
+Conjoint(tprefm,tprof,tlevn,y.type="score")
+
 
 ##################
 ####################### Preparation
@@ -354,3 +465,4 @@ icecream
 # 3. The values_to argument: here you define the name of the variable that stores the actual values.
 
 icecream
+
