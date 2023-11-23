@@ -11,7 +11,7 @@ library(tidyverse)
 set.seed(1)
 setwd("/Users/Sungjin/Library/CloudStorage/GoogleDrive-sungjin3@hawaii.edu/My Drive/Teaching/Marketing Analytics/Chapter Examples/Chapter 12")
 
-setwd("G:/My Drive/Teaching/Marketing Analytics/Chapter Examples")
+#setwd("G:/My Drive/Teaching/Marketing Analytics/Chapter Examples")
 ## Set up attributes and levels as a list
 attrib.level <- list(brand = c("CR", "Apple", "Samsung", "FitBit"),
                      ship = c("$0", "$10", "$20"), 
