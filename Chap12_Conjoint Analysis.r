@@ -71,7 +71,7 @@ part.worths
 
 ## Export part-worths from analysis
 #write.csv(part.worths, file.choose(new=TRUE), row.names = FALSE) ## Name the file conjoint_partworths.csv
-
+data("tea")
 
 part.worths
 tprefm #Matrix of preferences(100 respondents and 13 profiles)
@@ -178,7 +178,8 @@ print(cor(code))
 #Example 1
 library(conjoint)
 data(tea)
-tprefm
+head(tprefm)
+head(tpref)
 tprof
 imp
 dim(tprefm)
@@ -194,6 +195,7 @@ print(paste("Sum: ", sum(imp)), quote=FALSE)
 #Function caLogit estimates participation of simulation profiles using logit model. Function returns vector of percentage participations. The sum of participation should be 100%.
 data(tea)
 tsimp
+tpref
 simutil<-caLogit(tsimp,tpref,tprof)
 print("Percentage participation of profiles: ", quote=FALSE)
 print(simutil)

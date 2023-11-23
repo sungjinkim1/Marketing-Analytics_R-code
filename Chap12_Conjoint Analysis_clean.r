@@ -10,7 +10,7 @@ library(conjoint)
 library(tidyverse)
 set.seed(1)
 setwd("/Users/Sungjin/Library/CloudStorage/GoogleDrive-sungjin3@hawaii.edu/My Drive/Teaching/Marketing Analytics/Chapter Examples/Chapter 12")
-
+setwd("/Users/Sungjin/Dropbox (UH)/Teaching/Marketing Analytics/Chapter Examples")
 #setwd("G:/My Drive/Teaching/Marketing Analytics/Chapter Examples")
 ## Set up attributes and levels as a list
 attrib.level <- list(brand = c("CR", "Apple", "Samsung", "FitBit"),
@@ -43,7 +43,7 @@ attrib.vector
 
 ## Run the conjoint analysis study
 caPartUtilities(pref,design,attrib.vector) 
-caUtilities(pref,design,attrib.vector) 
+caUtilities(pref, design, attrib.vector)
 
 ## Calculating average attribute importance
 avg.importance = caImportance(pref,design)
@@ -58,6 +58,7 @@ avg.importance.fig <- ggplot(avg.importance, aes(x =Names, y = avg.importance)) 
 avg.importance.fig
 
 ## Getting Segmentation
+library(fpc)
 segments<-caSegmentation(pref,design,c = 3)
 print(segments$seg)
 plotcluster(segments$util,segments$sclu)
