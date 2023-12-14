@@ -3,6 +3,7 @@
 #############################
 
 setwd("/Users/Sungjin/Dropbox (UH)/Teaching/Marketing Analytics/Chapter Examples")
+
 ## Install Packages (if needed)
 install.packages("MatchIt")
 install.packages("dplyr")
