@@ -21,6 +21,7 @@ set.seed(1)
 psmatch <- read_csv("Chapter 16/retail_psmatch.csv")
 glimpse(psmatch)
 summary(psmatch)
+knitr::kable(summary(psmatch), format = "markdown")
 
 ## Look at pre-matched data
 psmatch %>%
@@ -30,7 +31,7 @@ psmatch %>%
 
 ## Difference of covariates
 psmatch_keep <- c('email', 'revenue', 'number_of_orders', 'number_of_orders2', 'recency_days')
-psmatch_cov <- subset(psmatch, select = psmatch_keep)
+psmatch_cov <- psmatch %>% select(all_of(psmatch_keep))
 psmatch_cov %>%
   group_by(email) %>%
   summarise_all(mean)
@@ -38,9 +39,8 @@ psmatch_cov %>%
 ## Determine Optimal Caliper Size
 ps_match <- glm(email ~ revenue + number_of_orders + number_of_orders2 + recency_days, 
 	family = binomial(), data = psmatch)
-ps_match_df <- data.frame(pr_score = predict(ps_match, type = "response"),
-                     email = ps_match$model$email)
-0.2*sd(ps_match_df$pr_score)
+pr_score = predict(ps_match, type = "response") # this calculates the propensity score
+0.2*sd(pr_score)  # 0.2 times the standard deviation of the propensity score
 
 ## Executing a matching algorithm
 psmatch_nomiss <- psmatch %>%  
@@ -55,11 +55,12 @@ dim(matched_data)
 
 ## Looking at Post-matching means
 #options(digits = 2)
-matched_data_cov <- subset(matched_data, select = psmatch_keep)
+matched_data_cov = matched_data %>% select(all_of(psmatch_keep))
+matching_check = 
 matched_data_cov %>%
     group_by(email) %>%
     summarise_all(mean) 
-
+matching_check
 ## Tobit model with PS Match data
 tobit_treat <- tobit(purchase_amt ~ email + revenue + number_of_orders + number_of_orders2 + recency_days, left = 0, data = matched_data)
 summary(tobit_treat)
