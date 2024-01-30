@@ -13,17 +13,21 @@ library(tidyverse)
 
 set.seed(1)
 #You have to choose your own wd
-setwd("G:/My Drive/Teaching/Marketing Analytics/Chapter Examples")
-seg <- read_csv("segmentation_results.csv")
+setwd("Set your working directory location")
+#setwd("~/Dropbox (UH)/Marketing-Analytics-Lectures---2024-Spring") This is my computer example
+seg <- read_csv("Use the import Dataset tab to find segmentation_results.csv file") 
+#seg <- read_csv("~/Dropbox (UH)/Chapter Examples/Chapter 3/segmentation_results.csv") This is my computer example
 seg = column_to_rownames(.data = seg, var = "...1") #Need to change first column as the row name
-prospect <- read_csv("Chapter 4/retail_classification.csv")
+prospect <- read_csv("Use the import Dataset tab to find retail_classification.csv")
+#prospect <- read_csv("~/Dropbox (UH)/Chapter Examples/Chapter 4/retail_classification.csv") This is my computer example
 
-head(seg)
-head(prospect)
+glimpse(seg)
+glimpse(prospect)
+
 ## Run Discriminant Analysis
 ## Notice that we used seg data, not prospect data to understand the demographics of existing segments
 ## In the textbook p 91, you can see that 6 segments are not appropriate because seg 3 is only 0.03 and seg5 is only 0.02
-fit <- lda(segment ~ married + own_home + household_size + income + age, data = seg,)
+fit <- lda(segment ~ married + own_home + household_size + income + age, data = seg)
 
 fit$counts #segment sizes
 fit$prior #segment sizes
@@ -35,15 +39,21 @@ fit ## print the summary statistics of your discriminant analysis
 
 #plot(fit)
 ## Check which Discriminant Functions are Significant
+
+# Predict using the LDA model
 ldaPred <- predict(fit, seg)
+# Extract the discriminant scores
 ldaPred$x
 ld <- ldaPred$x
+# Check significance of each discriminant function for each segment
 anova(lm(ld[,1] ~ seg$segment))
 anova(lm(ld[,2] ~ seg$segment))
 anova(lm(ld[,3] ~ seg$segment))
 anova(lm(ld[,4] ~ seg$segment))
 
 ## Check Disciminant Model Fit
+
+# Predict using the LDA model on the same data it was trained on
 pred.seg <- predict(fit)
 summary(pred.seg)
 head(pred.seg$class)
@@ -94,7 +104,19 @@ tbl_demographic =
 
 tbl_demographic = bind_cols(tbl_demographic, seg_size = fit$prior)
 tbl_demographic
+
 ## Add Predicted Segment to classification Data
 prospect.seg <- cbind(prospect, pred.prospect)
+glimpse(prospect.seg)
+
+pred_demographic = 
+  prospect.seg %>%  group_by(pred.prospect) %>%
+  dplyr::select(married,
+                own_home,
+                household_size,
+                income,
+                age) %>% 
+  summarise_all("mean")
+pred_demographic
 write.csv(prospect.seg, file = "classification_pred.csv") ## Name file classification_pred.csv
 

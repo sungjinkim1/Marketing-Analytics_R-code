@@ -1,12 +1,19 @@
 rm(list=ls())
+
+install.packages("cluster")    # clustering algorithms
+install.packages("factoextra") # clustering algorithms & visualization
+install.packages("gridExtra") #tool for showing multiple pictures
+
 library(readr) # reading the dataset
 library(tidyverse)  # data manipulation
 library(cluster)    # clustering algorithms
 library(factoextra) # clustering algorithms & visualization
 library(gridExtra) #tool for showing multiple pictures
 
-setwd("G:/My Drive/Teaching/Marketing Analytics/Chapter Examples")
-seg <- read_csv("Chapter 3/retail_segmentation.csv")
+setwd("your folder") #choose your folder
+#setwd("/Users/Sungjin/Dropbox (UH)/Chapter Examples/Chapter 3") #my folder is this
+
+seg <- read_csv("retail_segmentation.csv") 
 glimpse(seg)
 
 seg = column_to_rownames(.data = seg, var = "Cust_No")
@@ -26,7 +33,7 @@ summary(seg_base_var)
 
 
 k2 <- kmeans(seg_base_var, centers = 2, nstart = 25)
-glimpse(k2)
+k2
 
 fviz_cluster(k2, data = seg_base_var)
 
@@ -59,6 +66,7 @@ fviz_nbclust(seg_base_var, kmeans, method = "silhouette")
 final <- kmeans(seg_base_var, 5, nstart = 25)
 final
 segment = final$cluster
+segment
 segmentation_result <- bind_cols(seg, segment=segment)
 glimpse(segmentation_result)
 
@@ -95,3 +103,4 @@ fviz_nbclust(seg_base_var, FUN = hcut, method = "silhouette")
 
 sub_grp <- cutree(hc, k = 4)
 fviz_cluster(list(data = seg_base_var, cluster = sub_grp))
+
