@@ -7,8 +7,9 @@ View(smartwatch)
 #
 #Finding the optimal number of clusters through Eigenvalues
 #Install package cluster and factoextra. And use the libraries
-install.packages("factoextra")
 library(factoextra)
+glimpse(smartwatch)
+
 fviz_nbclust(smartwatch, kmeans, method = "wss")
 
 #After cluster=3, the additional loss of information is very less, which is the optimal number of clusters

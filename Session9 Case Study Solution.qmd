@@ -1,0 +1,156 @@
+---
+title: "Segmenting the Smartwatch Market"
+#author: "Sungjin Kim"
+editor: visual
+format: pdf
+execute:
+  warning: false
+---
+
+## Overview
+
+SmartWatch performed cluster analysis to perform an industry segmentation in order to identify various subsamples of dentists who are homogeneous in their behaviors and preferences and markedly different from other subsamples. Use the dataset ‘SmartWatch Case Data file.xlsm’ to perform cluster analysis. 
+
+## 
+
+Solutions
+
+1.  **Understanding the data: Before embarking on the journey of modeling, it is important to cultivate a priliminary exploration of the data at hand; it lays the foundation for informed decision-making and accurate model interpretation. (1 pt)**
+
+    1.  Glimpse and Summary the Data (0.25 pt):
+
+        -   Use functions like `glimpse()` and `summary()` in R to get a quick overview of the dataset. This will provide information on variable types, missing values, and basic statistics.
+
+            ```{r eval=FALSE}
+            setwd("your wd")
+            library(readxl)
+            library(tidyverse)
+            smartwatch <- read_excel("SmartWatch Data File.xlsx")
+            glimpse(smartwatch)
+            summary(smartwatch)
+            ```
+
+            ```{r echo=FALSE}
+            setwd("/Users/Sungjin/Dropbox (UH)/Marketing-Analytics-Lectures---2024-Spring/Homework/SmartWatch")
+            library(readxl)
+            library(tidyverse)
+            smartwatch <- read_excel("SmartWatch Data File.xlsx")
+            glimpse(smartwatch)
+            summary(smartwatch)
+            ```
+
+    2.  Distinguish Bases Variables from Descriptive Variables (0.25 pt)
+
+        -   Bases variables include all variables except for `Female,Degree,Income,Age`
+
+        ```{r}
+        smartwatch_NonDemog = smartwatch %>% select(-c(Female,Degree,Income,Age))
+
+        ```
+
+    3.  Obtain Average of Bases Variables (0.25 pt):
+
+        -   Calculate the average of the bases variables, grouping by income, female, and Amazon membership. This can be achieved using functions like `group_by()` and `summarize()` in R.
+
+        ```{r}
+        smartwatch %>% group_by(Income) %>% summarise(avg_ConstCom = mean(ConstCom),
+                                                      avg_TimelyInf = mean(TimelyInf),
+                                                      avg_TaskMgm = mean(TaskMgm),
+                                                      avg_DeviceSt = mean(DeviceSt),
+                                                      avg_Wellness = mean(Wellness),
+                                                      avg_Athlete = mean(Athlete),
+                                                      avg_Style = mean(Style))
+
+        smartwatch %>% group_by(Female) %>% summarise(avg_ConstCom = mean(ConstCom),
+                                                      avg_TimelyInf = mean(TimelyInf),
+                                                      avg_TaskMgm = mean(TaskMgm),
+                                                      avg_DeviceSt = mean(DeviceSt),
+                                                      avg_Wellness = mean(Wellness),
+                                                      avg_Athlete = mean(Athlete),
+                                                      avg_Style = mean(Style))
+
+        smartwatch %>% group_by(AmznP) %>% summarise(avg_ConstCom = mean(ConstCom),
+                                                      avg_TimelyInf = mean(TimelyInf),
+                                                      avg_TaskMgm = mean(TaskMgm),
+                                                      avg_DeviceSt = mean(DeviceSt),
+                                                      avg_Wellness = mean(Wellness),
+                                                      avg_Athlete = mean(Athlete),
+                                                      avg_Style = mean(Style))
+
+        ```
+
+    4.  Briefly Discuss Data Patterns (0.25 pt):
+
+        -   Analyze the obtained averages and look for patterns or trends. Consider how bases variables vary across different groups such as income levels, gender, and Amazon membership. Note any significant differences or similarities observed.
+
+2.  **Now, run the cluster analysis using the R function that we used in the class (3 pt)**
+
+    1.  Draw Elbow Plot with Bases Variables (0.5 pt):
+
+        -   Use the R function discussed in class draw an elbow plot using only the bases variables.
+
+        ```{r}
+
+        ```
+
+    2.  Draw Elbow Plot with Base and Demographic Variables (0.5 pt):
+
+        -   Repeat the process, this time including both base and demographic variables.
+
+        ```{r}
+
+        ```
+
+    3.  Determine Optimal Number of Clusters (0.5 pt):
+
+        -   Examine the elbow plot and determine the number of clusters where the rate of decrease sharply changes (elbow point). This is often considered the optimal number of clusters.
+
+        ```{r}
+
+        ```
+
+    4.  Segment Size (0.25 pt):
+
+        -   Once you've determined the optimal number of clusters, check the size (number of consumers) in each segment.
+
+        ```{r}
+
+        ```
+
+    5.  Create Creative Segment Names and Describe them (1 pt):
+
+        -   Assign creative and relevant names to each segment based on their unique characteristics. Describe the unique features or behaviors that define each cluster.
+
+        ```{r}
+
+        ```
+
+    6.  Visualize Clusters (0.25 pt):
+
+        -   Utilize the R function from our class to visualize the clusters. This can include creating scatter plots, dendrograms, or any other relevant visualization method to showcase the distinctiveness of each segment.
+
+        ```{r}
+
+        ```
+
+3.  **Run the discriminant analysis using the same smartwatch data. Keep in mind that you should include only demographic variables (1 pt).**
+
+    1.  Utilize the R function discussed in class for this analysis (0.5 pt)
+
+        ```{r}
+
+        ```
+
+    2.  Evaluate the significance of the discriminant function to ascertain its statistical importance (0.25 pt)
+
+        ```{r}
+
+        ```
+
+    3.  Create a confusion table to scrutinize the hit rates. Given the use of the same dataset, anticipate achieving notably high accuracy rates. It's worth highlighting that during our class discussions, different dataset (specifically, prospect data) was employed for the segment prediction (0.25 pt)
+
+        ```{r}
+
+        ```
+
+4.  

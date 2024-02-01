@@ -2,7 +2,6 @@
 ## Discriminant Analysis and Classification in R #
 ##################################################
 
-#My version---------------------
 ## Install Packages (if needed)
 #install.packages("MASS")
 rm(list=ls())
@@ -14,21 +13,24 @@ library(tidyverse)
 set.seed(1)
 #You have to choose your own wd
 setwd("Set your working directory location")
-#setwd("~/Dropbox (UH)/Marketing-Analytics-Lectures---2024-Spring") This is my computer example
 seg <- read_csv("Use the import Dataset tab to find segmentation_results.csv file") 
-#seg <- read_csv("~/Dropbox (UH)/Chapter Examples/Chapter 3/segmentation_results.csv") This is my computer example
-seg = column_to_rownames(.data = seg, var = "...1") #Need to change first column as the row name
 prospect <- read_csv("Use the import Dataset tab to find retail_classification.csv")
-#prospect <- read_csv("~/Dropbox (UH)/Chapter Examples/Chapter 4/retail_classification.csv") This is my computer example
 
+#These are my computer example
+#setwd("~/Dropbox (UH)/Marketing-Analytics-Lectures---2024-Spring") 
+#seg <- read_csv("~/Dropbox (UH)/Chapter Examples/Chapter 3/segmentation_results.csv") 
+#prospect <- read_csv("~/Dropbox (UH)/Chapter Examples/Chapter 4/retail_classification.csv")
+
+seg = column_to_rownames(.data = seg, var = "...1") #Need to change first column as the row name
 glimpse(seg)
 glimpse(prospect)
-
+tmp = lm(segment~married,dat  = seg)
+tmp$coefficients
 ## Run Discriminant Analysis
 ## Notice that we used seg data, not prospect data to understand the demographics of existing segments
 ## In the textbook p 91, you can see that 6 segments are not appropriate because seg 3 is only 0.03 and seg5 is only 0.02
 fit <- lda(segment ~ married + own_home + household_size + income + age, data = seg)
-
+fit
 fit$counts #segment sizes
 fit$prior #segment sizes
 fit$means #group means
@@ -57,6 +59,7 @@ anova(lm(ld[,4] ~ seg$segment))
 pred.seg <- predict(fit)
 summary(pred.seg)
 head(pred.seg$class)
+pred.seg$class
 head(pred.seg$posterior)
 head(pred.seg$x)
 
@@ -64,7 +67,8 @@ pred.seg <- predict(fit)$class # this gives us the predicted segment assignments
 tseg <- table(seg$segment, pred.seg) #making confusion table
 tseg # print table
 sum(diag(tseg))/nrow(seg) # print percent correct
-
+diag(tseg)
+nrow(seg)
 ## Run classification Using Discriminant Function
 pred.prospect <- predict(fit, prospect)
 head(pred.prospect$class)
