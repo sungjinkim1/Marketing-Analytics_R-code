@@ -34,10 +34,9 @@ summary(logit_result2)
 
 ## Predicted Probability
 
-logit = logit %>% mutate(predicted_prob = 
-                           predict(object = logit_result1,
-                                   newdata = logit, 
-                                   type = "response"))
+logit$predicted_prob = predict(object = logit_result1,
+                               newdata = logit, 
+                               type = "response")
 str(logit)
 
 ## Predicted Probability of hypothetical situation
