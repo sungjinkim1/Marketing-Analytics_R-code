@@ -7,15 +7,11 @@ library(readr)
 set.seed(1)
 
 ## Set working directory
-setwd("G:/My Drive/Teaching/Marketing Analytics/Chapter Examples")
+setwd("/Users/Sungjin/Dropbox (UH)/Marketing-Analytics-Lectures---2024-Spring/Chapter Examples")
 ## Read in Logistic Regression data
 logit <- read_csv("Chapter 8/retail_logit.csv")
 str(logit)
 summary(logit)
-
-logit = logit %>% mutate(number_of_orders2 = number_of_orders^2,
-                         lnrevenue = log(revenue + 1))
-logit
 
 ## Transform and Create Data
 logit = logit %>% mutate(number_of_orders2 = number_of_orders^2,
