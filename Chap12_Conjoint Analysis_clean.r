@@ -1,7 +1,7 @@
 #####################
 # Conjoint Analysis #
 #####################
-
+rm(list = ls())
 ## Install Packages (if needed)
 install.packages("conjoint")
 
@@ -9,8 +9,7 @@ install.packages("conjoint")
 library(conjoint)
 library(tidyverse)
 set.seed(1)
-setwd("/Users/Sungjin/Library/CloudStorage/GoogleDrive-sungjin3@hawaii.edu/My Drive/Teaching/Marketing Analytics/Chapter Examples/Chapter 12")
-setwd("/Users/Sungjin/Dropbox (UH)/Teaching/Marketing Analytics/Chapter Examples")
+setwd("/Users/Sungjin/Dropbox (UH)/Marketing-Analytics-Lectures---2024-Spring/Chapter Examples")
 #setwd("G:/My Drive/Teaching/Marketing Analytics/Chapter Examples")
 ## Set up attributes and levels as a list
 attrib.level <- list(brand = c("CR", "Apple", "Samsung", "FitBit"),
