@@ -2,7 +2,7 @@
 # Marketing Mix #
 #################
 
-setwd("/Users/Sungjin/Dropbox (UH)/Teaching/Marketing Analytics/Chapter Examples")
+setwd("/Users/Sungjin/Dropbox (UH)/Marketing-Analytics-Lectures---2024-Spring/Chapter Examples")
 ## Install Packages (if needed)
 install.packages("tseries")
 
@@ -13,7 +13,7 @@ library(tseries)
 set.seed(1)
 
 ## Read in the marketing mix data
-mmix <- read.csv("~/Dropbox (UH)/Teaching/Marketing Analytics/Chapter Examples/Chapter 15/mmix_data.csv")
+mmix <- read.csv("Chapter 15/mmix_data.csv")
 
 ## Look at means of variables
 summary(mmix)
@@ -27,7 +27,7 @@ mmix <- mmix %>%
     ln_digital_search = log(digital_search),
     ln_print = log(print + 1),  # Adding 1 to handle cases where print is 0
     ln_tv = log(tv),
-    lln_quantity = lag(ln_quantity, default = 0),  # Lagging ln_quantity with a default of 0
+    ln_quantity_lag = lag(ln_quantity, default = 0),  # Lagging ln_quantity with a default of 0
     weekdays = weekdays(as.Date(date))
   )
 
