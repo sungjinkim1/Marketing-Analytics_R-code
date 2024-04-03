@@ -1,14 +1,14 @@
 ##################
 # Bass Diffusion #
 ##################
-setwd("/Users/Sungjin/Dropbox (UH)/Teaching/Marketing Analytics/Chapter Examples")
+setwd("/Users/Sungjin/Dropbox (UH)/Marketing-Analytics-Lectures---2024-Spring")
 
 ## Load Packages and Set Seed1
 library(tidyverse)
 set.seed(1)
 
 ## Read in the sales data
-sales <- read_csv("Chapter 13/sales_data.csv")
+sales <- read_csv("Chapter Examples/Chapter 13/sales_data.csv")
 glimpse(sales)
 
 
@@ -44,11 +44,15 @@ periods <- 50
 t <- seq(1, periods)
 forecasts <- data.frame(t=1:periods) # define time period first
 psales <- double(periods); pcumsales <- double(periods+1)
+psales
+pcumsales
 # define null values for predicted sales and predicted cumulative sales
 for (i in 1:periods){ #for each period from 1:50
   psales[i] <- p*M+(q-p)*pcumsales[i]-(q/M)*pcumsales[i]^2 # calculate this and store psales
   pcumsales[i+1] <- pcumsales[i]+psales[i] # calculate the cumulative sales
 }
+psales
+pcumsales
 forecasts$psales <- psales # store this into forecasts
 forecasts$pcumsales <- pcumsales[-1]  ## Remove the first value which is 0
 forecasts
@@ -85,3 +89,4 @@ ggplot(combined_data, aes(x = t, y = cumsales, color = type)) +
   geom_line() +
   labs(title = "Actual Sales vs. Predicted Comparison", x = "Time", y = "Sales")+
   theme(legend.position = "bottom")
+
