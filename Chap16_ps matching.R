@@ -1,8 +1,7 @@
 #############################
 # Propensity Score Matching #
 #############################
-
-setwd("/Users/Sungjin/Dropbox (UH)/Teaching/Marketing Analytics/Chapter Examples")
+setwd("/Users/Sungjin/Dropbox (UH)/Marketing-Analytics-Lectures---2024-Spring/Chapter Examples")
 
 ## Install Packages (if needed)
 install.packages("MatchIt")

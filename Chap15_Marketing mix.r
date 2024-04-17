@@ -30,13 +30,13 @@ mmix <- mmix %>%
     ln_quantity_lag = lag(ln_quantity, default = 0),  # Lagging ln_quantity with a default of 0
     weekdays = weekdays(as.Date(date))
   )
-
+glimpse(mmix)
 ## Check for unit root
 adf.test(mmix$ln_quantity)
 
 ## Check for multicollinearity
 cor_table <- mmix %>% 
-  select(ln_quantity, lln_quantity, ln_price, ln_digital_ad,
+  select(ln_quantity, ln_quantity_lag, ln_price, ln_digital_ad,
          ln_digital_search, ln_print, ln_tv) %>%
   cor() %>%
   round(2)
@@ -44,14 +44,18 @@ cor_table
 
 ## Combine ln_digital_ad and ln_digital_search
 mmix$ln_digital <- log(mmix$digital_ad + mmix$digital_search)
+glimpse(mmix)
+log(mmix$digital_ad + mmix$digital_search)
+log(mmix$digital_ad) + log(mmix$digital_search)
 
 ## Run the regression
-mmix_reg <- lm(ln_quantity ~ lln_quantity + ln_price + ln_digital + ln_print + 
+mmix_reg <- lm(ln_quantity ~ ln_quantity_lag + ln_price + ln_digital + ln_print + 
 ln_tv + factor(weekdays), data = mmix)
 summary(mmix_reg)
 
 ## Created predicted values for actual quantity
 mmix$pred_quantity <- exp(predict(mmix_reg))
+predict(mmix_reg)
 mmix$pred_quantity
 
 ggplot(mmix, aes(x = day)) +
@@ -62,3 +66,4 @@ ggplot(mmix, aes(x = day)) +
        y = "Quantity") +
   scale_color_manual(values = c("Actual Quantity" = "blue", "Predicted Quantity" = "red")) +
   theme_minimal()
+
